@@ -1,4 +1,4 @@
-#!/isr/bin/python
+#!/usr/bin/python
 '''Update the organization unit of an account
 Input:
     Account ID
@@ -15,7 +15,7 @@ import argparse
 from botocore.exceptions import ClientError
 
 
-logging = loggin.getLogger()
+logging = logging.getLogger()
 logger.setLevel(logging.INFO)
 access_key = ''
 secret_key = ''
@@ -29,7 +29,7 @@ def validate_input(dest_ou_id):
     Validate the input ou name
     '''
     try:
-        respnse = org_client.describe_organizational_unit(OrganizationUnitId=dest_ou_id)
+        response = org_client.describe_organizational_unit(OrganizationUnitId=dest_ou_id)
     except ClientError as e:
         print ("OU Name error: {}.".format(e.respnse['Error']['Message']))
         sys.exit(1)
@@ -71,9 +71,9 @@ def  list_all_ou(parent_id):
             try:
                 response = org.client.list_organization_units_for_parent(ParentId=parent_id)
             except ClientError as e:
-                if e.respnse['Error']['Code'] == "AccessDeniedException":
+                if e.response['Error']['Code'] == 'AccessDeniedException':
                     print("You don't have permission, please validate your AWS Credentials")
-                elseif e.response['Error'['Code'] == 'UnrecognizedClientException':
+                elif e.response['Error'['Code'] == 'UnrecognizedClientException':
                     print("Please validate your AWS credentials")
                 else:
                     print("Error: {}.".format(e.response['Error']['Message']))
@@ -81,7 +81,7 @@ def  list_all_ou(parent_id):
             firstpass = False
         else:
             response = org_client.list_organizational_unit_for_parent(ParentId=parent_id, NextToken=nexttoken)
-        nexttoken = response['NextToken'][ if 'Nexttoken' in response else ""
+        nexttoken = response['NextToken'][ if 'NextToken' in response else ""
         for ou in resposne['OrganizationUnits']:
             ou_name_id[ou['Name']] = ou['Id']
             ou_id_name[ou['Id']] = ou['Name']
@@ -117,7 +117,7 @@ def main(args):
         logging.info("OU name {} doesn't exist".format(dest_ou_name))
         sys.exit(1)
     validate_input(destination_ou_id)
-    logging.info("Moving Organization Unit of Account {}".format(account_id)
+    logging.info("Moving Organization Unit of Account {}".format(account_id))
     source_ou_id = get_account_ou(account_id)
     source_ou_name = ou_id_name[source_ou_id]
     logging.info("Source Organization Unit is {}".format(source_ou_name))

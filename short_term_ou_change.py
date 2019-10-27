@@ -14,8 +14,7 @@ def print_time():
     print
     now = datetime.now()
     print("Time is now: {}".format(now)
-    print("Time is now: {}".format(now.strftime("%Y-%m-%d %H:%M"))
-    print
+    #print("Time is now: {}".format(now.strftime("%Y-%m-%d %H:%M"))
 
 
 def wait(timeout):
